@@ -1,13 +1,14 @@
-import { defineConfig } from "vite";
-import { nitroV2Plugin as nitro } from "@solidjs/vite-plugin-nitro-2";
-
-import { solidStart } from "@solidjs/start/config";
+import { defineConfig } from "@solidjs/start/config";
 
 export default defineConfig({
-  plugins: [
-    solidStart(),
-    nitro({
-      preset: "cloudflare-pages",
-    }),
-  ],
+  // In 1.3.2, these are root properties
+  ssr: true,
+  server: {
+    preset: "cloudflare-pages",
+    unenv: {
+      aliases: {
+        node: true,
+      },
+    },
+  },
 });
