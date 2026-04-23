@@ -9,26 +9,26 @@ export default function App() {
     <Router
       root={(props) => (
         <MetaProvider>
-          <Title>Sealed Unit Survey</Title>
+          <title>sealed unit survey</title>
           <link
             rel="icon"
             type="image/png"
-            href="/public/./favicon-96x96.png?v=20260421"
+            href="/favicon-96x96.png?v=20260421"
             sizes="96x96"
           />
           <link
             rel="icon"
             type="image/svg+xml"
-            href="/public/./favicon.svg?v=20260421"
+            href="/favicon.svg?v=20260421"
           />
-          <link rel="shortcut icon" href="/public/./favicon.ico?v=20260421" />
+          <link rel="shortcut icon" href="/favicon.ico?v=20260421" />
           <link
             rel="apple-touch-icon"
             sizes="180x180"
-            href="/public/./apple-touch-icon.png?v=20260421"
+            href="/apple-touch-icon.png?v=20260421"
           />
-          <meta name="apple-mobile-web-app-title" content="USurvey" />
-          <link rel="manifest" href="/public/./site.webmanifest?v=20260421" />
+          <meta name="apple-mobile-web-app-title" content="usurvey" />
+          <link rel="manifest" href="/site.webmanifest?v=20260421" />
           <Suspense>{props.children}</Suspense>
         </MetaProvider>
       )}

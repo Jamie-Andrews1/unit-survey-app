@@ -1,34 +1,33 @@
-import styles from "./ClearSurveryModal.module.css";
 import type { SealedUnit } from "~/lib/Types";
+import styles from "./ComfirmRemove.module.css";
+import { X } from "lucide-solid";
 
-type Props = {
-  onConfirm: (units: SealedUnit[]) => void;
-  count: number;
-};
+interface Props {
+  units: SealedUnit[];
+  set: (units: SealedUnit[]) => void;
+  current: number;
+}
 
-export function ClearSurveyModal(props: Props) {
+export function ConfirmRemove(props: Props) {
   let dialogRef: HTMLDialogElement | undefined;
 
   // We use a separate signal to trigger the native showModal() method
   const openModal = () => dialogRef?.showModal();
   const closeModal = () => dialogRef?.close();
 
-  const clearAllSurveys = () => {
-    // 1. Clear the signal
-    props.onConfirm([] as SealedUnit[]);
+  const removeUnit = (id: number) => {
+    const updated = props.units.filter((u) => u.id !== id);
+    props.set(updated);
+    localStorage.setItem("pending_surveys", JSON.stringify(updated));
 
-    // 2. Clear the persistence
-    localStorage.removeItem("pending_surveys");
-
-    // 3. Close the native dialog
     dialogRef?.close();
   };
 
   return (
     <>
       {/* The Trigger Button - usually placed near the table */}
-      <button class={styles.btnClearAll} onClick={openModal}>
-        Clear Survey
+      <button class={styles.deleteBtn} onClick={openModal}>
+        <X />
       </button>
 
       {/* The Native Dialog */}
@@ -40,8 +39,7 @@ export function ClearSurveyModal(props: Props) {
         <div class={styles.modalBody}>
           <h3>Delete All Units?</h3>
           <p>
-            You have {props.count} unit{props.count > 1 && "s"} in this survey.
-            This cannot be undone.
+            Are you sure you want to remove this unit. This cannot be undone.
           </p>
 
           <div class={styles.actions}>
@@ -50,7 +48,7 @@ export function ClearSurveyModal(props: Props) {
             </button>
             <button
               onClick={() => {
-                clearAllSurveys();
+                removeUnit(props.current);
               }}
               class={styles.btnConfirm}
             >

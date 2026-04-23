@@ -4,9 +4,9 @@ import { For, onMount, createSignal, Show } from "solid-js";
 import { generateShareText } from "~/lib/const";
 import type { SealedUnit } from "~/lib/Types";
 import styles from "./index.module.css";
-import { X } from "lucide-solid";
 import { ClearSurveyModal } from "~/components/ClearSurveryModal/ClearSurveyModal";
 import { generateSurveyPDF } from "~/lib/pdfGenerator";
+import { ConfirmRemove } from "~/components/ConfirmRemove/ConfirmRemove";
 
 const SurveyForm = clientOnly(
   () => import("../components/SurveyForm/SurveyForm"),
@@ -70,7 +70,6 @@ export default function SurveyPage() {
       console.log("Share failed", err);
     }
   };
-  console.log({ surveys });
   return (
     <main>
       <Title>Sealed Unit Survey</Title>
@@ -88,12 +87,11 @@ export default function SurveyPage() {
                 <div class={styles.unitCard}>
                   <div class={styles.cardHeader}>
                     <strong>{unit.ref}</strong>
-                    <button
-                      class={styles.deleteBtn}
-                      onClick={() => removeUnit(unit.id)}
-                    >
-                      <X />
-                    </button>
+                    <ConfirmRemove
+                      current={unit.id}
+                      set={updateSurveys}
+                      units={surveys()}
+                    />
                   </div>
                   <div class={styles.cardBody}>
                     <span>
@@ -127,12 +125,11 @@ export default function SurveyPage() {
                     <td>{unit.thickness}mm</td>
                     <td>{unit.spacer}</td>
                     <td>
-                      <button
-                        class={styles.deleteBtn}
-                        onClick={() => removeUnit(unit.id)}
-                      >
-                        Delete
-                      </button>
+                      <ConfirmRemove
+                        current={unit.id}
+                        set={updateSurveys}
+                        units={surveys()}
+                      />
                     </td>
                   </tr>
                 )}

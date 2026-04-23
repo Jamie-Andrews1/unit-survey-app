@@ -1,0 +1,72 @@
+.deleteBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #dc2626;
+  border: 1px solid #fee2e2;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deleteBtn:hover {
+  border-color: #dc2626;
+}
+
+/* Optional: Subtle pulse if the survey is getting very large */
+.deleteBtn:active {
+  transform: scale(0.95);
+}
+
+/* Icon styling if you use an SVG */
+.deleteBtn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+}
+.modal {
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+}
+.modalBody {
+  padding-inline: 1rem;
+  & h3 {
+    text-align: center;
+  }
+  & p {
+    text-align: center;
+  }
+}
+/* This styles the dimmed area behind the modal */
+.modal::backdrop {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px); /* Modern 'glass' effect */
+}
+
+/* Animation for 2026 feel */
+.modal[open] {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 1rem;
+}
