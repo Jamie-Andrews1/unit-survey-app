@@ -7,6 +7,10 @@ export default defineConfig({
     solidStart(),
     nitro({
       preset: "cloudflare_module",
+      cloudflare: {
+        deployConfig: false,
+        nodeCompat: true,
+      },
       rollupConfig: {
         external: ["__STATIC_CONTENT_MANIFEST", "node:async_hooks"],
       },
