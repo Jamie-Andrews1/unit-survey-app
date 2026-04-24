@@ -8,4 +8,4 @@ pages_build_output_dir = ".output/public"
 
 [assets]
 directory = ".output/public"
-binding = "ASSETS"
+binding = "APP_ASSETS"
