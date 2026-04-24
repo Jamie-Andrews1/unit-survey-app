@@ -1,0 +1,11 @@
+name = "surver-app"
+main = ".output/server/index.mjs"
+compatibility_date = "2026-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+# This is the key the error message is begging for:
+pages_build_output_dir = ".output/public"
+
+[assets]
+directory = ".output/public"
+binding = "ASSETS"
