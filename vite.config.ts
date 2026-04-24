@@ -1,13 +1,15 @@
-import { solidStart } from "@solidjs/start/config";
 import { defineConfig } from "vite";
-import { nitroV2Plugin } from "@solidjs/vite-plugin-nitro-2";
+import { solidStart } from "@solidjs/start/config";
+import { nitro } from "nitro/vite";
 
-export default defineConfig(() => ({
-  plugins: [solidStart(), nitroV2Plugin()],
-  nitro: {
-    preset: "cloudflare-pages",
-    rollupConfig: {
-      external: ["node:async_hooks"],
-    },
-  },
-}));
+export default defineConfig({
+  plugins: [
+    solidStart(),
+    nitro({
+      preset: "cloudflare_module",
+      rollupConfig: {
+        external: ["__STATIC_CONTENT_MANIFEST", "node:async_hooks"],
+      },
+    }),
+  ],
+});
