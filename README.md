@@ -21,3 +21,26 @@ Manual glazing surveys are prone to costly errors—incorrect thickness selectio
 | TypeScript         | End-to-end type safety across the configuration schema.             |
 | Zod                | Schema validation and complex business logic enforcement.           |
 | Cloudflare Workers | Edge computing platform for zero-latency deployments.               |
+
+## 🛠️ Local Development
+
+1. Clone the repo:
+
+```Bash
+git clone https://github.com/Jamie-Andrews1/unit-survey-app
+```
+
+2. Install dependencies:
+
+```Bash
+pnpm install
+```
+
+3. Run development server:
+
+```Bash
+pnpm run dev
+```
+
+📜 License
+Distributed under the MIT License. See LICENSE for more information.
