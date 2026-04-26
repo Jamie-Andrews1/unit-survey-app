@@ -6,10 +6,9 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background-color: #dc2626;
+  background-color: #ff2c2c;
   border: 1px solid #fee2e2;
   border-radius: 6px;
-  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -37,7 +36,15 @@
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   max-width: 400px;
 }
-
+.modalBody {
+  padding-inline: 1rem;
+  & h3 {
+    text-align: center;
+  }
+  & p {
+    text-align: center;
+  }
+}
 /* This styles the dimmed area behind the modal */
 .modal::backdrop {
   background: rgba(15, 23, 42, 0.7);

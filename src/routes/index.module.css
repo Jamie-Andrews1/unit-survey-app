@@ -60,7 +60,7 @@
 }
 
 .btnExport:hover {
-  background-color: #047857;
+  background-color: hsl(163, 94%, 24%);
 }
 .surveyContainer {
   margin-block: 2rem;

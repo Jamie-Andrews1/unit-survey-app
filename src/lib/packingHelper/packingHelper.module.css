@@ -1,0 +1,42 @@
+/* The Popover API uses the :popover-open pseudo-class */
+.popoverContent {
+  padding: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  max-width: 250px;
+  font-size: 0.875rem;
+  color: #334155;
+  /* Remove default browser styles */
+  margin: 0;
+  inset: auto;
+}
+
+/* Positioning - anchored to the trigger */
+#packingInfo {
+  /* This is a simple anchor trick, but for 2026, 
+     Anchor Positioning is the real pro move */
+  position-anchor: --helper-anchor;
+  top: anchor(bottom);
+  left: anchor(left);
+}
+
+.helperTrigger {
+  anchor-name: --helper-anchor;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #3b82f6;
+  background: white;
+  color: #3b82f6;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.helperWrapper {
+  font-size: var(--font-size);
+  width: 10px;
+}

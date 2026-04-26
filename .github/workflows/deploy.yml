@@ -3,7 +3,10 @@ on:
   push:
     branches:
       - main
-
+    paths-ignore:
+      - "README.md"
+      - "docs/**" # Also ignores anything in a docs folder
+      - ".gitignore"
 jobs:
   deploy:
     runs-on: ubuntu-latest

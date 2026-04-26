@@ -31,10 +31,10 @@
     justify-content: flex-start;
   }
 }
-
 .formGroup {
   display: grid;
   gap: 1rem;
+  position: relative;
 }
 input {
   border-radius: var(--form-bd-rad);
@@ -45,4 +45,44 @@ input {
 select {
   border-radius: var(--form-bd-rad);
   padding: 10px;
+}
+.formError {
+  color: #dc2626;
+  font-weight: 500;
+  top: 5.5rem;
+  left: 2ch;
+  margin-top: 2px;
+
+  animation: slideDown 0.25s ease-out forwards;
+  transform-origin: top;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scaleY(0.95);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: var(--font-size);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.animateShake {
+  animation: shake 0.2s ease-in-out 0s 2;
 }

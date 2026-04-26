@@ -7,6 +7,7 @@ import styles from "./index.module.css";
 import { ClearSurveyModal } from "~/components/ClearSurveryModal/ClearSurveyModal";
 import { generateSurveyPDF } from "~/lib/pdfGenerator";
 import { ConfirmRemove } from "~/components/ConfirmRemove/ConfirmRemove";
+import { PackingHelper } from "~/lib/packingHelper/packingHelper";
 
 const SurveyForm = clientOnly(
   () => import("../components/SurveyForm/SurveyForm"),
@@ -34,22 +35,6 @@ export default function SurveyPage() {
     localStorage.setItem("pending_surveys", JSON.stringify(newList));
   };
 
-  const removeUnit = (id: number) => {
-    if (!confirm("Are you sure you want to remove this unit?")) return;
-
-    const updated = surveys().filter((u) => u.id !== id);
-    setSurveys(updated);
-    localStorage.setItem("pending_surveys", JSON.stringify(updated));
-  };
-
-  const sendWhatsApp = () => {
-    window.open(`https://wa.me/?text=${generateShareText(surveys)}`, "_blank");
-  };
-
-  const sendSMS = () => {
-    window.open(`sms:?body=${generateShareText(surveys)}`, "_blank");
-  };
-
   const shareSurvey = async () => {
     const shareData = {
       title: "Sealed Unit Survey",
@@ -73,13 +58,20 @@ export default function SurveyPage() {
   return (
     <main>
       <Title>Sealed Unit Survey</Title>
-      <h1>Sealed Unit Survey</h1>
+      <h1>
+        Sealed Unit Survey
+        <div style={{ "margin-inline": "70%" }}>
+          <PackingHelper />
+        </div>
+      </h1>
 
       <Show when={hasLoaded()} fallback={<p>Loading survey data...</p>}>
         <SurveyForm set={updateSurveys} current={surveys()} />
 
         <h2>Surveyed Units ({surveys().length})</h2>
-        <ClearSurveyModal count={surveys().length} onConfirm={setSurveys} />
+        <Show when={surveys().length > 0}>
+          <ClearSurveyModal count={surveys().length} onConfirm={setSurveys} />
+        </Show>
         <div class={styles.surveyContainer}>
           <div class={styles.unitCards}>
             <For each={surveys()}>
@@ -120,7 +112,7 @@ export default function SurveyPage() {
                   <tr>
                     <td>{unit.ref}</td>
                     <td>
-                      {unit.width}w × {unit.height}h
+                      {unit.width}w × {unit.height}
                     </td>
                     <td>{unit.thickness}mm</td>
                     <td>{unit.spacer}</td>
@@ -142,7 +134,7 @@ export default function SurveyPage() {
         <div class={styles.shareActions}>
           {/* WhatsApp */}
           <button
-            style={{ "background-color": "#25D366" }}
+            style={{ "background-color": "rgb(37, 211, 102)", color: "white" }}
             onClick={() => shareSurvey()}
             class="btn-whatsapp"
           >
