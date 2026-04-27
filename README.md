@@ -1,4 +1,5 @@
 # 🪟 GlazeFlow: A high-performance, edge-deployed configuration tool for the glazing industry.
+[![Deploy](https://github.com/Jamie-Andrews1/unit-survey-app/actions/workflows/deploy.yml/badge.svg)](https://survey-app.daworker.workers.dev/)
 
 ## 🚀 The Mission
 
@@ -43,4 +44,4 @@ pnpm run dev
 ```
 
 📜 License
-Distributed under the MIT License. See LICENSE for more information.
+Distributed under the MIT License. See [LICENSE](./LICENSE) for more information.
