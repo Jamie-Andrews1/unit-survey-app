@@ -36,7 +36,8 @@ export default function SurveyPage() {
   };
 
   const shareSurvey = async () => {
-    const shareData = {
+    const shareTitle = "📋 GlazeFlow: Sealed Unit Survey";
+    const shareBody = {
       title: "Sealed Unit Survey",
       text: surveys()
         .map(
@@ -47,6 +48,11 @@ export default function SurveyPage() {
             `-------------------`,
         )
         .join("\n"),
+    };
+
+    const shareData = {
+      title: "Sealed Unit Survey",
+      text: `${shareTitle}\n\n${shareBody}`,
     };
 
     try {
