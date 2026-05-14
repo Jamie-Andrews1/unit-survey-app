@@ -1,5 +1,5 @@
 import { Accessor } from "solid-js";
-import { GlazingType, SealedUnit, SpacerType } from "./Types";
+import { GlazingType, SealedUnit, SpacerType, ThicknessSchema } from "./Types";
 
 export const GLAZING_SCHEMA: Record<GlazingType, string> = {
   dg_standard: "Double Glazed - Standard",
@@ -23,11 +23,16 @@ export const SPACER_SCHEMA: Record<SpacerType, string> = {
   standard_black: "Standard Black (Warm-Edge)",
 };
 
+export const THICKNESS_SCHEMA: Record<SpacerType, string> = {
+  silver: "Silver Aluminum",
+  white: "White Warm-Edge",
+  standard_black: "Standard Black (Warm-Edge)",
+};
+
 export const generateShareText = (surveys: Accessor<SealedUnit[]>) => {
   let text = "Sealed Unit Survey Report:\n\n";
   surveys().forEach((s, i) => {
-    text += `${i + 1}. ${s.ref}: ${s.width}x${s.height}mm (${s.thickness}mm) - ${GLAZING_SCHEMA[s.glazing]}\n`;
+    text += `${i + 1}. ${s.ref}: ${s.width} x ${s.height}mm (${s.thickness}mm) - ${GLAZING_SCHEMA[s.glazing]}\n - ${SPACER_SCHEMA[s.spacer]} spacer`;
   });
   return encodeURIComponent(text);
 };
-
