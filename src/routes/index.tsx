@@ -37,18 +37,15 @@ export default function SurveyPage() {
 
   const shareSurvey = async () => {
     const shareTitle = "📋 GlazeFlow: Sealed Unit Survey";
-    const shareBody = {
-      title: "Sealed Unit Survey",
-      text: surveys()
-        .map(
-          (s) =>
-            `Ref: ${s.ref}\n` +
-            `Size: ${s.width}mm x ${s.height}mm\n` +
-            `Spec: ${s.glazing} | ${s.spacer}\n` +
-            `-------------------`,
-        )
-        .join("\n"),
-    };
+    const shareBody = surveys()
+      .map(
+        (s) =>
+          `Ref: ${s.ref}\n` +
+          `Size: ${s.width}mm x ${s.height}mm\n` +
+          `Spec: ${s.glazing} | ${s.spacer}\n` +
+          `-------------------`,
+      )
+      .join("\n");
 
     const shareData = {
       title: "Sealed Unit Survey",
