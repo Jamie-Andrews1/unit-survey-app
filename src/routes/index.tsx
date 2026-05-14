@@ -39,9 +39,14 @@ export default function SurveyPage() {
     const shareData = {
       title: "Sealed Unit Survey",
       text: surveys()
-        .map((s) => `${s.ref}: ${s.width}x${s.height}`)
-        .join(", "),
-      url: window.location.href, // Or a link to the PDF if uploaded
+        .map(
+          (s) =>
+            `Ref: ${s.ref}\n` +
+            `Size: ${s.width}mm x ${s.height}mm\n` +
+            `Spec: ${s.glazing} | ${s.spacer}\n` +
+            `-------------------`,
+        )
+        .join("\n"),
     };
 
     try {
