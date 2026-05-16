@@ -48,7 +48,8 @@ p {
 input,
 button,
 select,
-textarea {
+textarea,
+input[type="checkbox"] {
   font-size: inherit;
 }
 button,

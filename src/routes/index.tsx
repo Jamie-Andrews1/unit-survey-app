@@ -1,7 +1,7 @@
 import { Title } from "@solidjs/meta";
 import { clientOnly } from "@solidjs/start";
 import { For, onMount, createSignal, Show } from "solid-js";
-import { generateShareText } from "~/lib/const";
+import { generateShareText, GLAZING_SCHEMA, SPACER_SCHEMA } from "~/lib/const";
 import type { SealedUnit } from "~/lib/Types";
 import styles from "./index.module.css";
 import { ClearSurveyModal } from "~/components/ClearSurveryModal/ClearSurveyModal";
@@ -39,10 +39,11 @@ export default function SurveyPage() {
     const shareTitle = "📋 GlazeFlow: Sealed Unit Survey";
     const shareBody = surveys()
       .map(
-        (s) =>
-          `Ref: ${s.ref}\n` +
-          `Size: ${s.width}mm x ${s.height}mm\n` +
-          `Spec: ${s.glazing} | ${s.spacer}\n` +
+          (s, i) =>
+          `${i + 1}: ${s.ref} \n` +
+          `Size: ${s.width}mm x ${s.height}mm (${s.thickness}mm unit)\n` +
+          `Glass: ${s.pattern.patternId ?? "Clear"} ${GLAZING_SCHEMA[s.glazing]}\n` +
+          `Spacer: ${SPACER_SCHEMA[s.spacer]}\n` +
           `-------------------`,
       )
       .join("\n");
@@ -57,7 +58,7 @@ export default function SurveyPage() {
         await navigator.share(shareData);
       } else {
         // Fallback to the WhatsApp link logic above
-        window.location.href = `https://wa.me/?text=${generateShareText(surveys)}`;
+        window.location.href = `https://wa.me/?text=${encodeURIComponent(shareBody)}`;
       }
     } catch (err) {
       console.log("Share failed", err);
@@ -97,6 +98,12 @@ export default function SurveyPage() {
                     <span>
                       {unit.width}mm x {unit.height}mm
                     </span>
+                    <span>
+                      {unit.pattern.hasPattern
+                        ? unit.pattern.patternId
+                        : "Clear"}
+                    </span>
+                    <span>{unit.glazing}</span>
                     <span class="thickness-tag">{unit.thickness}mm</span>
                   </div>
                 </div>
@@ -111,6 +118,7 @@ export default function SurveyPage() {
                 <th>Dimensions</th>
                 <th>Thickness</th>
                 <th>Spacer</th>
+                <th>Glass</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -124,6 +132,11 @@ export default function SurveyPage() {
                     </td>
                     <td>{unit.thickness}mm</td>
                     <td>{unit.spacer}</td>
+                    <td>
+                      {unit.pattern.hasPattern
+                        ? `${unit.pattern.patternId} ${unit.glazing}`
+                        : `Clear ${unit.glazing}`}
+                    </td>
                     <td>
                       <ConfirmRemove
                         current={unit.id}

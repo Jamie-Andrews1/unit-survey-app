@@ -1,0 +1,80 @@
+[
+  {
+    "id": "chantilly",
+    "name": "Chantilly",
+    "level": 2,
+    "description": "Lace-like delicate floral design."
+  },
+  {
+    "id": "autumn",
+    "name": "Autumn",
+    "level": 3,
+    "description": "Classic leaf pattern."
+  },
+  {
+    "id": "everglade",
+    "name": "Everglade",
+    "level": 5,
+    "description": "Heavy foliage for maximum privacy."
+  },
+  {
+    "id": "stippolyte",
+    "name": "Stippolyte",
+    "level": 4,
+    "description": "Small sand-like pits; very popular."
+  },
+  {
+    "id": "cotswold",
+    "name": "Cotswold",
+    "level": 5,
+    "description": "Vertical tree-bark effect."
+  },
+  {
+    "id": "minster",
+    "name": "Minster",
+    "level": 2,
+    "description": "Formal, traditional texture."
+  },
+  {
+    "id": "sycamore",
+    "name": "Sycamore",
+    "level": 2,
+    "description": "Delicate leaf design."
+  },
+  {
+    "id": "taffeta",
+    "name": "Taffeta",
+    "level": 3,
+    "description": "Linen/fabric appearance."
+  },
+  {
+    "id": "warwick",
+    "name": "Warwick",
+    "level": 1,
+    "description": "Random, scattered pattern."
+  },
+  {
+    "id": "oak",
+    "name": "Oak",
+    "level": 4,
+    "description": "Natural wood-grain texture."
+  },
+  {
+    "id": "mayflower",
+    "name": "Mayflower",
+    "level": 4,
+    "description": "Floral pattern."
+  },
+  {
+    "id": "contora",
+    "name": "Contora",
+    "level": 4,
+    "description": "Modern, organic design."
+  },
+  {
+    "id": "satin",
+    "name": "Satin",
+    "level": 5,
+    "description": "sandblasted surface."
+  }
+]

@@ -1,11 +1,12 @@
 import styles from "./SurveyFom.module.css";
-import { For, Show } from "solid-js";
+import { For, Show, createSignal } from "solid-js";
 import { GLAZING_SCHEMA, SPACER_SCHEMA } from "~/lib/const";
 import { RotateCcw } from "lucide-solid";
-import { UnitSchema, THICKNESS_OPTIONS } from "~/lib/Types";
+import { UnitSchema, THICKNESS_OPTIONS, GlassPattern } from "~/lib/Types";
 import { z } from "zod";
 import { createStore } from "solid-js/store";
 import type { SealedUnit } from "~/lib/Types";
+import patternData from "../../data/patterns.json";
 
 interface Props {
   current: SealedUnit[];
@@ -13,20 +14,28 @@ interface Props {
 }
 
 export default function SurveyForm(props: Props) {
+  const [hasPattern, setHasPattern] = createSignal(false);
   const [errors, setErrors] = createStore<Record<string, string[] | undefined>>(
     {},
   );
+
+  const patterns = patternData as GlassPattern[];
 
   const addUnit = (e: SubmitEvent) => {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
 
-    // We use Object.fromEntries to grab everything at once
     const rawData = Object.fromEntries(formData.entries());
 
-    // Use a modified schema that coerces strings to numbers
-    const result = UnitSchema.safeParse({ ...rawData, id: Date.now() });
+    const result = UnitSchema.safeParse({
+      ...rawData,
+      id: Date.now(),
+      pattern: {
+        hasPattern: hasPattern(), // true or false from your Solid signal
+        patternId: hasPattern() ? rawData.pattern : undefined,
+      },
+    });
 
     setErrors({});
     if (!result.success) {
@@ -39,6 +48,7 @@ export default function SurveyForm(props: Props) {
     const newEntry = result.data;
 
     props.set([...props.current, newEntry]);
+    setHasPattern(false);
     form.reset();
   };
 
@@ -103,7 +113,7 @@ export default function SurveyForm(props: Props) {
           name="thickness"
           required
           aria-invalid={!!errors.thickness}
-          onchange={() => setErrors("thickness", undefined)}
+          onChange={() => setErrors("thickness", undefined)}
           class={errors.thickness ? styles.animateShake : ""}
         >
           <option value="">--Select Thickness--</option>
@@ -123,7 +133,7 @@ export default function SurveyForm(props: Props) {
           id="glazing-type"
           name="glazing"
           required
-          onchange={() => setErrors("glazing", undefined)}
+          onChange={() => setErrors("glazing", undefined)}
           class={errors.glazing ? styles.animateShake : ""}
         >
           <option value="" disabled selected>
@@ -144,7 +154,7 @@ export default function SurveyForm(props: Props) {
         <select
           id="spacer-bar"
           name="spacer"
-          onchange={() => setErrors("spacer", undefined)}
+          onChange={() => setErrors("spacer", undefined)}
           class={errors.spacer ? styles.animateShake : ""}
         >
           <option value="" disabled selected>
@@ -160,6 +170,50 @@ export default function SurveyForm(props: Props) {
           </span>
         </Show>
       </div>
+      <div class={styles.formGroup}>
+        <label>
+          <input
+            style={{ width: "2rem" }}
+            type="checkbox"
+            name="hasPattern"
+            checked={hasPattern()}
+            onchange={(e) => {
+              const checked = e.currentTarget.checked;
+              setHasPattern(checked);
+              if (!checked) setErrors("pattern.patternId", undefined);
+            }}
+          />
+          Is this Patterned Glass?
+        </label>
+      </div>
+      <Show when={hasPattern()}>
+        <div class={styles.formGroup}>
+          <label for="patterns">Pattern</label>
+          <select
+            id="patterns"
+            name="pattern"
+            onchange={() => setErrors("pattern.patternId", undefined)}
+            class={errors.pattern ? styles.animateShake : ""}
+          >
+            <option value="" disabled selected>
+              --Select Pattern--
+            </option>
+            <For each={patterns}>
+              {(pattern) => (
+                <option value={pattern.id}>
+                  {pattern.name} (privacy level {pattern.level})
+                </option>
+              )}
+            </For>
+          </select>
+          <Show when={errors.pattern}>
+            <span id="pattern-error" class={styles.formError}>
+              {errors.pattern}
+            </span>
+          </Show>
+        </div>
+      </Show>
+
       <span class={styles.formActions}>
         <button type="submit">Add Unit</button>
         <button type="reset" value="Reset">

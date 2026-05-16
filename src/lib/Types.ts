@@ -1,5 +1,25 @@
 import { z } from "zod";
 
+export type PrivacyLevel = 1 | 2 | 3 | 4 | 5;
+
+export interface GlassPattern {
+  id: string;
+  name: string;
+  level: PrivacyLevel;
+  description: string;
+  isActive: boolean;
+}
+
+export const PatternSchema = z
+  .object({
+    hasPattern: z.boolean(),
+    patternId: z.string().optional(),
+  })
+  .refine((data) => !data.hasPattern || (data.hasPattern && !!data.patternId), {
+    message: "Please select a pattern type",
+    path: ["patternId"],
+  });
+
 const SpacerSchema = z.enum(["silver", "white", "standard_black"]);
 const GlazingSchema = z.enum([
   "dg_standard",
@@ -47,6 +67,7 @@ export const UnitSchema = z
     thickness: ThicknessSchema,
     glazing: GlazingSchema,
     spacer: SpacerSchema,
+    pattern: PatternSchema,
   })
 
   .refine(

@@ -24,11 +24,14 @@ export const generateSurveyPDF = async (surveys: SealedUnit[]) => {
     // Table Generation
     autoTable(doc, {
       startY: 40,
-      head: [["Ref", "Width (mm)", "Height (mm)", "Glazing", "Spacer"]],
+      head: [
+        ["Ref", "Width (mm)", "Height (mm)", "Pattern", "Glazing", "Spacer"],
+      ],
       body: surveys.map((u) => [
         u.ref || "No Ref",
         u.width,
         u.height,
+        u.pattern.patternId ?? "Clear",
         GLAZING_SCHEMA[u.glazing],
         SPACER_SCHEMA[u.spacer],
       ]),

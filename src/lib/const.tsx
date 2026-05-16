@@ -32,7 +32,12 @@ export const THICKNESS_SCHEMA: Record<SpacerType, string> = {
 export const generateShareText = (surveys: Accessor<SealedUnit[]>) => {
   let text = "Sealed Unit Survey Report:\n\n";
   surveys().forEach((s, i) => {
-    text += `${i + 1}. ${s.ref}: ${s.width} x ${s.height}mm (${s.thickness}mm) - ${GLAZING_SCHEMA[s.glazing]}\n - ${SPACER_SCHEMA[s.spacer]} spacer`;
+    text +=
+      `${i + 1}: ${s.ref} \n` +
+      `Size: ${s.width}mm x ${s.height}mm (${s.thickness}mm unit)\n` +
+      `Glass: ${s.pattern.patternId ?? "Clear"} ${GLAZING_SCHEMA[s.glazing]}\n` +
+      `Spacer: ${SPACER_SCHEMA[s.spacer]}\n` +
+      `-------------------`;
   });
   return encodeURIComponent(text);
 };
