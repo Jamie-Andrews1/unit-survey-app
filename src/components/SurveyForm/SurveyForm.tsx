@@ -1,7 +1,9 @@
 import styles from "./SurveyFom.module.css";
-import { For, Show, createSignal } from "solid-js";
+import { For, Show, createSignal, createMemo } from "solid-js";
 import { GLAZING_SCHEMA, SPACER_SCHEMA } from "~/lib/const";
 import { RotateCcw } from "lucide-solid";
+import { getAvailableThicknesses } from "~/lib/GetAvailableThick";
+import type { GlazingType } from "~/lib/Types";
 import { UnitSchema, THICKNESS_OPTIONS, GlassPattern } from "~/lib/Types";
 import { z } from "zod";
 import { createStore } from "solid-js/store";
@@ -13,11 +15,30 @@ interface Props {
   set: (units: SealedUnit[]) => void;
 }
 
+type ThicknessType = (typeof THICKNESS_OPTIONS)[number]["value"];
+
 export default function SurveyForm(props: Props) {
   const [hasPattern, setHasPattern] = createSignal(false);
+  const [glazing, setGlazing] = createSignal<GlazingType>("dg_standard");
+  const [thickness, setThickness] = createSignal<ThicknessType>(28);
   const [errors, setErrors] = createStore<Record<string, string[] | undefined>>(
     {},
   );
+
+  const availableThicknesses = createMemo(() =>
+    getAvailableThicknesses(glazing()),
+  );
+
+  const handleGlazingChange = (newGlazing: GlazingType) => {
+    setGlazing(newGlazing);
+
+    const validValues = getAvailableThicknesses(newGlazing).map(
+      (opt) => opt.value,
+    );
+    if (!validValues.includes(thickness())) {
+      setThickness(validValues[0]);
+    }
+  };
 
   const patterns = patternData as GlassPattern[];
 
@@ -113,11 +134,15 @@ export default function SurveyForm(props: Props) {
           name="thickness"
           required
           aria-invalid={!!errors.thickness}
-          onChange={() => setErrors("thickness", undefined)}
+          value={thickness()}
+          onChange={(e) => {
+            const selectedVal = Number(e.currentTarget.value) as ThicknessType;
+            setThickness(selectedVal);
+          }}
           class={errors.thickness ? styles.animateShake : ""}
         >
           <option value="">--Select Thickness--</option>
-          <For each={THICKNESS_OPTIONS}>
+          <For each={availableThicknesses()}>
             {(option) => <option value={option.value}>{option.label}</option>}
           </For>
         </select>
@@ -133,7 +158,10 @@ export default function SurveyForm(props: Props) {
           id="glazing-type"
           name="glazing"
           required
-          onChange={() => setErrors("glazing", undefined)}
+          value={glazing() as string}
+          onChange={(e) =>
+            handleGlazingChange(e.currentTarget.value as GlazingType)
+          }
           class={errors.glazing ? styles.animateShake : ""}
         >
           <option value="" disabled selected>
@@ -183,7 +211,7 @@ export default function SurveyForm(props: Props) {
               if (!checked) setErrors("pattern.patternId", undefined);
             }}
           />
-          Is this Patterned Glass?
+          Is this Patterned Or Specially Coated?
         </label>
       </div>
       <Show when={hasPattern()}>
@@ -216,7 +244,7 @@ export default function SurveyForm(props: Props) {
 
       <span class={styles.formActions}>
         <button type="submit">Add Unit</button>
-        <button type="reset" value="Reset">
+        <button type="reset" value="Reset" title="reset">
           <RotateCcw />
         </button>
       </span>

@@ -76,5 +76,23 @@
     "name": "Satin",
     "level": 5,
     "description": "sandblasted surface."
+  },
+  {
+    "id": "active",
+    "name": "Active Blue",
+    "level": 0,
+    "description": "Self Cleaning Glass Coating"
+  },
+  {
+    "id": "anti-sun",
+    "name": "Bronze Anti-Sun",
+    "level": 0,
+    "description": "reflects and block up to 99% of UV rays"
+  },
+  {
+    "id": "anti-sun",
+    "name": "Grey Anti-Sun",
+    "level": 0,
+    "description": "reflects and block up to 99% of UV rays"
   }
 ]

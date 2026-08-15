@@ -36,10 +36,10 @@ export default function SurveyPage() {
   };
 
   const shareSurvey = async () => {
-    const shareTitle = "📋 GlazeFlow: Sealed Unit Survey";
+    const shareTitle = "📋 NuGlaze: Sealed Unit Survey";
     const shareBody = surveys()
       .map(
-          (s, i) =>
+        (s, i) =>
           `${i + 1}: ${s.ref} \n` +
           `Size: ${s.width}mm x ${s.height}mm (${s.thickness}mm unit)\n` +
           `Glass: ${s.pattern.patternId ?? "Clear"} ${GLAZING_SCHEMA[s.glazing]}\n` +
@@ -134,7 +134,7 @@ export default function SurveyPage() {
                     <td>{unit.spacer}</td>
                     <td>
                       {unit.pattern.hasPattern
-                        ? `${unit.pattern.patternId} ${unit.glazing}`
+                        ? `${unit.pattern.patternId} ${unit?.glazing}`
                         : `Clear ${unit.glazing}`}
                     </td>
                     <td>

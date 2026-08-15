@@ -21,6 +21,7 @@ export const PatternSchema = z
   });
 
 const SpacerSchema = z.enum(["silver", "white", "standard_black"]);
+
 const GlazingSchema = z.enum([
   "dg_standard",
   "dg_toughened",
@@ -37,8 +38,9 @@ export const THICKNESS_OPTIONS = [
   { value: 20, label: "20mm (4/12/4)" },
   { value: 24, label: "24mm (4/16/4)" },
   { value: 28, label: "28mm (4/20/4) Most Common" },
-  { value: 32, label: "32mm (4/10/4/10/4) High Performance" },
-  { value: 36, label: "36mm (4/12/4/12/4)" },
+  { value: 28.8, label: "28.8mm (6.8/18/4) Laminated/Acoustic" },
+  { value: 32, label: "32mm (4/10/4/10/4)" },
+  { value: 36, label: "36mm (4/12/4/12/4) High Performance" },
 ] as const;
 
 const thicknessValues = THICKNESS_OPTIONS.map((opt) => opt.value) as [
@@ -69,22 +71,31 @@ export const UnitSchema = z
     spacer: SpacerSchema,
     pattern: PatternSchema,
   })
+  .superRefine((data, ctx) => {
+    // 1. Triple Glazing Thickness Check
+    if (
+      (data.glazing === "tg_standard" || data.glazing === "tg_toughened") &&
+      data.thickness < 32
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Triple glazing requires at least 32mm thickness",
+        path: ["thickness"],
+      });
+    }
 
-  .refine(
-    (data) => {
-      if (
-        data.glazing === "tg_standard" ||
-        (data.glazing === "tg_toughened" && data.thickness < 28)
-      ) {
-        return false;
-      }
-      return true;
-    },
-    {
-      message: "Triple glazing requires at least 28mm thickness",
-      path: ["thickness"], // This ensures the error appears under the 'thickness' field
-    },
-  );
+    // 2. Laminated / Acoustic Glazing Thickness Restriction (Must be 28mm)
+    if (
+      (data.glazing === "dg_laminated" || data.glazing === "dg_acoustic") &&
+      data.thickness !== 28.8
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Laminated and acoustic double glazing must be 28.8mm thick",
+        path: ["thickness"],
+      });
+    }
+  });
 
 export type SealedUnit = z.infer<typeof UnitSchema>;
 export type GlazingType = z.infer<typeof GlazingSchema>;
